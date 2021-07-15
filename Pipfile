@@ -11,6 +11,7 @@ coverage = "*"
 numpy = "*"
 pandas = "*"
 scikit-learn = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.8"
