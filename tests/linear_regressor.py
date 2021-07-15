@@ -32,28 +32,30 @@ class LinearRegressorTest(unittest.TestCase):
         self.__regressor.train(self.__data.train_set_x, self.__data.train_set_y)
         self.__regressor.test(self.__data.test_data, self.__data.test_set_x, self.__data.test_set_y)
         self.__regressor.plot_results()
-        self.__regressor.save_results()
+        resolution = datetime.timedelta(seconds=10)
+        save_time = datetime.datetime.now() \
+                    - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
+        save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
         plot_file = os.path.join(os.path.dirname(__file__),
                                  '../results/linear_regression/' +
-                                 (datetime.datetime.now())
-                                 .strftime('%Y-%m-%d %H:%M:%S'),
+                                 save_path,
                                  'results.png')
         self.assertEqual(True, os.path.isfile(plot_file))
-        modification_time = pathlib.Path(plot_file).stat().st_mtime
-        self.assertEquals(True, time.time() - modification_time < 0.1)
 
     def test_save_results(self):
         self.__data.prepare()
         self.__regressor.train(self.__data.train_set_x, self.__data.train_set_y)
         self.__regressor.test(self.__data.test_data, self.__data.test_set_x, self.__data.test_set_y)
         self.__regressor.save_results()
+        resolution = datetime.timedelta(seconds=10)
+        save_time = datetime.datetime.now() \
+                    - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
+        save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
         csv_file = os.path.join(os.path.dirname(__file__),
                                 '../results/linear_regression/' +
-                                datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                                save_path,
                                 'results.csv')
         self.assertEqual(True, os.path.isfile(csv_file))
-        modification_time = pathlib.Path(csv_file).stat().st_mtime
-        self.assertEquals(True, time.time() - modification_time < 0.1)
 
 
 if __name__ == '__main__':

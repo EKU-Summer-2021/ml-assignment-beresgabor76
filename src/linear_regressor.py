@@ -12,6 +12,7 @@ class LinearRegressor:
     """
     Class for training a Linear Regression model, and then test it
     """
+
     def __init__(self):
         """
         Constructor creates a LinearRegression model
@@ -56,7 +57,10 @@ class LinearRegressor:
         max_x = max_y = self.__target.max()
         plt.plot([min_x, max_x], [min_y, max_y])
         plt.scatter(self.__target, self.__prediction, alpha=0.5)
-        save_path = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        resolution = datetime.timedelta(seconds=10)
+        save_time = datetime.datetime.now() \
+            - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
+        save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
         if not os.path.exists(os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path)):
             os.chdir(self.__parent_dir)
             os.mkdir(save_path)
@@ -71,13 +75,16 @@ class LinearRegressor:
                                 self.__target,
                                 self.__prediction], axis=1).drop(['index'], axis=1)
         results_df['error'] = results_df['prediction'] - results_df['charges']
-        results_df['error_pc'] = (results_df['prediction'] - results_df['charges'])\
-                                / results_df['charges'] * 100
+        results_df['error_pc'] = (results_df['prediction'] - results_df['charges']) \
+                                 / results_df['charges'] * 100
         results_df = results_df.round(2)
-        save_path = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        resolution = datetime.timedelta(seconds=10)
+        save_time = datetime.datetime.now() \
+            - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
+
+        save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
         if not os.path.exists(os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path)):
             os.chdir(self.__parent_dir)
             os.mkdir(save_path)
         csv_file = os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path, 'results.csv')
         results_df.to_csv(path_or_buf=csv_file, index=False)
-
