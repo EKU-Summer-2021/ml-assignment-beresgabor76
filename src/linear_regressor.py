@@ -2,6 +2,7 @@
 Module for Linear Regression class
 """
 import os
+import datetime
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
@@ -20,6 +21,8 @@ class LinearRegressor:
         self.__test_set = None
         self.__target = None
         self.__prediction = None
+        self.__parent_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                         '../results/linear_regression')
 
     def train(self, train_set_x, train_set_y):
         """
@@ -53,7 +56,12 @@ class LinearRegressor:
         max_x = max_y = self.__target.max()
         plt.plot([min_x, max_x], [min_y, max_y])
         plt.scatter(self.__target, self.__prediction, alpha=0.5)
-        fig.savefig(os.path.join(os.path.dirname(__file__), '../plots', 'results.png'))
+        save_path = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        if not os.path.exists(os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path)):
+            os.chdir(self.__parent_dir)
+            os.mkdir(save_path)
+        plot_file = os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path, 'results.png')
+        fig.savefig(plot_file)
 
     def save_results(self):
         """
@@ -66,6 +74,10 @@ class LinearRegressor:
         results_df['error_pc'] = (results_df['prediction'] - results_df['charges'])\
                                 / results_df['charges'] * 100
         results_df = results_df.round(2)
-        csv_file = os.path.join(os.path.dirname(__file__), '../results', 'results.csv')
+        save_path = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        if not os.path.exists(os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path)):
+            os.chdir(self.__parent_dir)
+            os.mkdir(save_path)
+        csv_file = os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path, 'results.csv')
         results_df.to_csv(path_or_buf=csv_file, index=False)
 
