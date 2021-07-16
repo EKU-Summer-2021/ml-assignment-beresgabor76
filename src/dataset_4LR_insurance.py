@@ -1,0 +1,19 @@
+"""
+Module for class intended to store and prepare insurance data for linear regression
+"""
+from abc import ABC
+from src import Dataset4LR
+
+
+class Dataset4LRInsurance(Dataset4LR, ABC):
+    """
+    Class intended to store and prepare insurance data for linear regression
+    """
+
+    def __init__(self, test_size, random_state):
+        super().__init__('insurance.csv', test_size, random_state)
+
+    def _categories_encoding(self):
+        self._category_ordinal_encoder('sex')
+        self._category_ordinal_encoder('smoker')
+        self._category_1hot_encoder('region')

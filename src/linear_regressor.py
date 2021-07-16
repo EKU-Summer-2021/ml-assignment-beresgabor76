@@ -37,16 +37,20 @@ class LinearRegressor:
         """
         self.__test_data = test_data.copy()
         self.__test_data.reset_index(inplace=True)
+        self.__test_data = self.__test_data.drop('index', axis=1)
         self.__test_set = pd.DataFrame(test_set_x.copy())
         self.__test_set.reset_index(inplace=True)
+        self.__test_set = self.__test_set.drop('index', axis=1)
         self.__target = pd.DataFrame(test_set_y)
         self.__target.reset_index(inplace=True)
+        self.__target = self.__target.drop('index', axis=1)
         score = self.__lin_reg.score(test_set_x, test_set_y)
         print("\nScore for test set: " + str(score))
         self.__prediction = pd.DataFrame(self.__lin_reg.predict(test_set_x),
                                          index=test_set_x.index,
                                          columns=['prediction'])
         self.__prediction.reset_index(inplace=True)
+        self.__prediction = self.__prediction.drop('index', axis=1)
 
     def plot_results(self):
         """
@@ -73,15 +77,13 @@ class LinearRegressor:
         """
         results_df = pd.concat([self.__test_data,
                                 self.__target,
-                                self.__prediction], axis=1).drop(['index'], axis=1)
-        results_df['error'] = results_df['prediction'] - results_df['charges']
-        results_df['error_pc'] = (results_df['prediction'] - results_df['charges']) \
-                                 / results_df['charges'] * 100
+                                self.__prediction], axis=1)
+        results_df['error'] = results_df.iloc[:, -1] - results_df.iloc[:, -2]
+        results_df['error_pc'] = results_df['error'] / results_df.iloc[:, -3] * 100
         results_df = results_df.round(2)
         resolution = datetime.timedelta(seconds=10)
         save_time = datetime.datetime.now() \
             - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
-
         save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
         if not os.path.exists(os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path)):
             os.chdir(self.__parent_dir)
