@@ -11,6 +11,9 @@ from src.dataset_4CLF import Dataset4CLF
 from src.dataset_4LR_insurance import Dataset4LRInsurance
 from src.dataset_4CLF_wine_quality import Dataset4CLFWineQuality
 from src.decision_tree import DecisionTree
+from src.saving_strategy_4SL import SavingStrategy4SL
+from src.plotting_strategy_4LR import PlottingStrategy4LR
+from src.plotting_strategy_4CLF import PlottingStrategy4CLF
 
 __all__ = [
     'Polynomial',
@@ -21,5 +24,8 @@ __all__ = [
     'Dataset4CLF',
     'Dataset4LRInsurance',
     'Dataset4CLFWineQuality',
-    'DecisionTree'
+    'DecisionTree',
+    'SavingStrategy4SL',
+    'PlottingStrategy4LR',
+    'PlottingStrategy4CLF'
 ]

@@ -13,7 +13,7 @@ class LinearRegressor:
     Class for training a Linear Regression model, and then test it
     """
 
-    def __init__(self):
+    def __init__(self, saving_strategy, plotting_strategy):
         """
         Constructor creates a LinearRegression model
         """
@@ -24,6 +24,8 @@ class LinearRegressor:
         self.__prediction = None
         self.__parent_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                          '../results/linear_regression')
+        self.__saving_strategy = saving_strategy
+        self.__plotting_strategy = plotting_strategy
 
     def train(self, train_set_x, train_set_y):
         """
@@ -56,37 +58,13 @@ class LinearRegressor:
         """
         Plots out how the predicted values approximate the real ones
         """
-        fig = plt.figure()
-        min_x = min_y = self.__target.min()
-        max_x = max_y = self.__target.max()
-        plt.plot([min_x, max_x], [min_y, max_y])
-        plt.scatter(self.__target, self.__prediction, alpha=0.5)
-        resolution = datetime.timedelta(seconds=10)
-        save_time = datetime.datetime.now() \
-            - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
-        save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
-        if not os.path.exists(os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path)):
-            os.chdir(self.__parent_dir)
-            os.mkdir(save_path)
-        plot_file = os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path, 'results.png')
-        fig.savefig(plot_file)
+        self.__plotting_strategy.plot_results(self.__target,
+                                              self.__prediction, self.__parent_dir)
 
     def save_results(self):
         """
         Saves test dataset with target values and prediction results with errors
         """
-        results_df = pd.concat([self.__test_data,
-                                self.__target,
-                                self.__prediction], axis=1)
-        results_df['error'] = results_df.iloc[:, -1] - results_df.iloc[:, -2]
-        results_df['error_pc'] = results_df['error'] / results_df.iloc[:, -3] * 100
-        results_df = results_df.round(2)
-        resolution = datetime.timedelta(seconds=10)
-        save_time = datetime.datetime.now() \
-            - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
-        save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
-        if not os.path.exists(os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path)):
-            os.chdir(self.__parent_dir)
-            os.mkdir(save_path)
-        csv_file = os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path, 'results.csv')
-        results_df.to_csv(path_or_buf=csv_file, index=False)
+        self.__saving_strategy.save_results(self.__test_set,
+                                            self.__target,
+                                            self.__prediction, self.__parent_dir)

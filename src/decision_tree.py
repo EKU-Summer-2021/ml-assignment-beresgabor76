@@ -15,7 +15,7 @@ class DecisionTree:
     """
     Class for training a Linear Regression model, and then test it
     """
-    def __init__(self):
+    def __init__(self, saving_strategy, plotting_strategy):
         """
         Constructor creates a LinearRegression model
         """
@@ -25,7 +25,8 @@ class DecisionTree:
         self.__prediction = None
         self.__parent_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                          '../results/classification')
-        self.__confusion_mx = None
+        self.__saving_strategy = saving_strategy
+        self.__plotting_strategy = plotting_strategy
 
     def determine_hyperparameters(self, train_set_x, train_set_y):
         params = {'criterion': ['gini', 'entropy'], 'max_depth': [4, 5, 6],
@@ -80,37 +81,13 @@ class DecisionTree:
         """
         Plots out the tree as well as confusion matrix fpr the test
         """
-        fig = plt.figure()
-        plt.hist(pd.concat([self.__target, self.__prediction], axis=1),
-                 color=['blue', 'red'], label=['Actual', 'Prediction'],
-                 histtype='bar', bins=6)
-        plt.legend()
-        resolution = datetime.timedelta(seconds=10)
-        save_time = datetime.datetime.now() \
-                    - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
-        save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
-        if not os.path.exists(os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path)):
-            os.chdir(self.__parent_dir)
-            os.mkdir(save_path)
-        plot_file = os.path.join(os.path.dirname(__file__), self.__parent_dir,
-                                 save_path, 'results.png')
-        fig.savefig(plot_file)
+        self.__plotting_strategy.plot_results(self.__target,
+                                              self.__prediction, self.__parent_dir)
 
     def save_results(self):
         """
         Saves test dataset with target values and prediction results with errors
         """
-        results_df = pd.concat([self.__test_set,
-                                self.__target,
-                                self.__prediction], axis=1)
-        results_df['error'] = results_df.iloc[:, -1] - results_df.iloc[:, -2]
-        results_df = results_df.round(2)
-        resolution = datetime.timedelta(seconds=10)
-        save_time = datetime.datetime.now() \
-            - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
-        save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
-        if not os.path.exists(os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path)):
-            os.chdir(self.__parent_dir)
-            os.mkdir(save_path)
-        csv_file = os.path.join(os.path.dirname(__file__), self.__parent_dir, save_path, 'results.csv')
-        results_df.to_csv(path_or_buf=csv_file, index=False)
+        self.__saving_strategy.save_results(self.__test_set,
+                                            self.__target,
+                                            self.__prediction, self.__parent_dir)
