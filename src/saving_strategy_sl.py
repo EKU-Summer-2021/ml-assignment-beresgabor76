@@ -10,9 +10,9 @@ class SavingStrategy4SL(SavingStrategy):
     """
     Results' saving strategy implementation for Supervised Learning
     """
-    def save_results(self, test_data, target, prediction, parent_dir, sub_dir):
+    def save_results(self, test_data, target, prediction, save_dir):
         results_df = pd.concat([test_data, target, prediction], axis=1)
         results_df['error'] = results_df.iloc[:, -1] - results_df.iloc[:, -2]
         results_df = results_df.round(2)
-        csv_file = os.path.join(os.path.dirname(__file__), parent_dir, sub_dir, 'results.csv')
+        csv_file = os.path.join(os.path.dirname(__file__), save_dir, 'results.csv')
         results_df.to_csv(path_or_buf=csv_file, index=False)

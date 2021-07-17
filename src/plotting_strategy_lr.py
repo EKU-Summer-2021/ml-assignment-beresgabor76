@@ -10,7 +10,7 @@ class PlottingStrategy4LR(PlottingStrategy):
     """
     Results' plotting strategy implementation for Linear Regression
     """
-    def plot_results(self, target, prediction, parent_dir, sub_dir):
+    def plot_results(self, target, prediction, save_dir):
         """
         Plots out how the predicted values approximate the real ones
         """
@@ -19,5 +19,5 @@ class PlottingStrategy4LR(PlottingStrategy):
         max_x = max_y = target.max()
         plt.plot([min_x, max_x], [min_y, max_y])
         plt.scatter(target, prediction, alpha=0.5)
-        plot_file = os.path.join(os.path.dirname(__file__), parent_dir, sub_dir, 'results.png')
+        plot_file = os.path.join(os.path.dirname(__file__), save_dir, 'results.png')
         fig.savefig(plot_file)

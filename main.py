@@ -1,9 +1,9 @@
-from src import LinearRegressor
 from src import Dataset4LRInsurance
-from src import Dataset4CLFWineQuality
-from src import DecisionTree
 from src import SavingStrategy4SL
 from src import PlottingStrategy4LR
+from src import LinearRegressor
+from src import Dataset4CLFWineQuality
+from src import DecisionTree
 from src import PlottingStrategy4CLF
 
 

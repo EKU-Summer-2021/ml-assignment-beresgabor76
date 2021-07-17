@@ -1,41 +1,27 @@
 """
-Module
+Module for a class for a Decision Tree Classifier
 """
 import os
-import datetime
 import pandas as pd
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import cross_val_predict, GridSearchCV
 from sklearn.tree import DecisionTreeClassifier
+from src import LearningAlgorithm
 
 
-class DecisionTree:
+class DecisionTree(LearningAlgorithm):
     """
-    Class for training a Linear Regression model, and then test it
+    Class for training a Decision Tree Classifier model, and then test it
     """
     def __init__(self, saving_strategy, plotting_strategy):
         """
         Constructor creates a LinearRegression model
         """
+        super().__init__(saving_strategy, plotting_strategy)
         self.__tree_clf = DecisionTreeClassifier()
-        self.__test_set = None
-        self.__target = None
-        self.__prediction = None
-        self.__parent_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+        self._parent_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                          '../results/classification')
-        self.__sub_dir = self.__make_save_dir()
-        self.__saving_strategy = saving_strategy
-        self.__plotting_strategy = plotting_strategy
-
-    def __make_save_dir(self):
-        resolution = datetime.timedelta(seconds=10)
-        save_time = datetime.datetime.now() \
-                    - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
-        sub_dir = save_time.strftime('%Y-%m-%d %H:%M:%S')
-        if not os.path.exists(os.path.join(os.path.dirname(__file__), self.__parent_dir, sub_dir)):
-            os.chdir(self.__parent_dir)
-            os.mkdir(sub_dir)
-        return sub_dir
+        self._sub_dir = self._make_save_dir()
 
     def determine_hyperparameters(self, train_set_x, train_set_y):
         """
@@ -73,32 +59,18 @@ class DecisionTree:
         """
         Tests the LinearRegression model with passed data
         """
-        self.__test_set = pd.DataFrame(test_set_x.copy())
-        self.__test_set.reset_index(inplace=True)
-        self.__test_set = self.__test_set.drop('index', axis=1)
-        self.__target = pd.DataFrame(test_set_y)
-        self.__target.reset_index(inplace=True)
-        self.__target = self.__target.drop('index', axis=1)
+        self._test_set = pd.DataFrame(test_set_x.copy())
+        self._test_set.reset_index(inplace=True)
+        self._test_set = self._test_set.drop('index', axis=1)
+        self._target = pd.DataFrame(test_set_y)
+        self._target.reset_index(inplace=True)
+        self._target = self._target.drop('index', axis=1)
         test_set_y_pred = self.__tree_clf.predict(test_set_x)
-        self.__prediction = pd.DataFrame(test_set_y_pred,
-                                         index=test_set_x.index,
-                                         columns=['prediction'])
-        self.__prediction.reset_index(inplace=True)
-        self.__prediction = self.__prediction.drop('index', axis=1)
+        self._prediction = pd.DataFrame(test_set_y_pred,
+                                        index=test_set_x.index,
+                                        columns=['prediction'])
+        self._prediction.reset_index(inplace=True)
+        self._prediction = self._prediction.drop('index', axis=1)
         conf_mx = confusion_matrix(test_set_y, test_set_y_pred)
         print('Confusion matrix on test set:')
         print(conf_mx)
-
-    def plot_results(self):
-        """
-        Plots out the tree as well as confusion matrix fpr the test
-        """
-        self.__plotting_strategy.plot_results(self.__target, self.__prediction,
-                                              self.__parent_dir, self.__sub_dir)
-
-    def save_results(self):
-        """
-        Saves test dataset with target values and prediction results with errors
-        """
-        self.__saving_strategy.save_results(self.__test_set, self.__target, self.__prediction,
-                                            self.__parent_dir, self.__sub_dir)
