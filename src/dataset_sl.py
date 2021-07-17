@@ -43,9 +43,9 @@ class Dataset4SL(ABC):
         Reads in a csv file and splits into X and y sets
         """
         try:
-            df = pd.read_csv(os.path.join(os.path.dirname(__file__), '../data', self._filename))
-            self._dataset_x = df.iloc[:, :-1]
-            self._dataset_y = df.iloc[:, -1:]
+            df_dataset = pd.read_csv(os.path.join(os.path.dirname(__file__), '../data', self._filename))
+            self._dataset_x = df_dataset.iloc[:, :-1]
+            self._dataset_y = df_dataset.iloc[:, -1:]
         except:
             print('An error occurred during reading the csv file.')
             sys.exit(1)

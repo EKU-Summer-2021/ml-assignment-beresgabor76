@@ -12,6 +12,7 @@ class LearningAlgorithm(ABC):
     """
     def __init__(self, saving_strategy, plotting_strategy):
         super().__init__()
+        self._test_data = None
         self._test_set = None
         self._target = None
         self._prediction = None
