@@ -3,8 +3,8 @@ Module for dataset class used in Linear Regression
 """
 from abc import ABC
 import pandas as pd
-from src import Dataset4SL
 from sklearn.preprocessing import MinMaxScaler
+from src import Dataset4SL
 
 
 class Dataset4LR(Dataset4SL, ABC):

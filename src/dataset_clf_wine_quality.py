@@ -18,4 +18,3 @@ class Dataset4CLFWineQuality(Dataset4CLF, ABC):
         """
         No category attributes to be encoded
         """
-        pass

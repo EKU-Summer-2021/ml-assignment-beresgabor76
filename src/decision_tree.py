@@ -38,6 +38,9 @@ class DecisionTree:
         return sub_dir
 
     def determine_hyperparameters(self, train_set_x, train_set_y):
+        """
+        Determines classifier hyperparameters by GridSearchCV
+        """
         params = {'criterion': ['gini', 'entropy'], 'max_depth': [4, 5, 6],
                   'min_samples_split': [10, 12, 15], 'min_samples_leaf': [7, 10, 12, 15]}
         grid_search = GridSearchCV(estimator=self.__tree_clf,
@@ -82,9 +85,9 @@ class DecisionTree:
                                          columns=['prediction'])
         self.__prediction.reset_index(inplace=True)
         self.__prediction = self.__prediction.drop('index', axis=1)
-        self.__confusion_mx = confusion_matrix(test_set_y, test_set_y_pred)
+        conf_mx = confusion_matrix(test_set_y, test_set_y_pred)
         print('Confusion matrix on test set:')
-        print(self.__confusion_mx)
+        print(conf_mx)
 
     def plot_results(self):
         """

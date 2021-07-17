@@ -2,7 +2,6 @@
 Module for results' SavingStrategy for datasets of Supervised Learning
 """
 import os
-import datetime
 import pandas as pd
 from src.saving_strategy import SavingStrategy
 

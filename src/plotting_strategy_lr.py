@@ -1,10 +1,9 @@
 """
 Module for results' PlottingStrategy for datasets of Linear Regresssion
 """
-from src.plotting_strategy import PlottingStrategy
 import os
-import datetime
 import matplotlib.pyplot as plt
+from src.plotting_strategy import PlottingStrategy
 
 
 class PlottingStrategy4LR(PlottingStrategy):

@@ -1,11 +1,10 @@
 """
 Module for results' PlottingStrategy for datasets of Classification
 """
-from src.plotting_strategy import PlottingStrategy
 import os
-import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
+from src.plotting_strategy import PlottingStrategy
 
 
 class PlottingStrategy4CLF(PlottingStrategy):

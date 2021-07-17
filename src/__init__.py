@@ -4,15 +4,15 @@ Pylint will check code in the src directory only!
 '''
 from src.polynomial import Polynomial
 from src.linear_regressor import LinearRegressor
-from src.dataset_4SL import Dataset4SL
-from src.dataset_4LR import Dataset4LR
-from src.dataset_4CLF import Dataset4CLF
-from src.dataset_4LR_insurance import Dataset4LRInsurance
-from src.dataset_4CLF_wine_quality import Dataset4CLFWineQuality
+from src.dataset_sl import Dataset4SL
+from src.dataset_lr import Dataset4LR
+from src.dataset_clf import Dataset4CLF
+from src.dataset_lr_insurance import Dataset4LRInsurance
+from src.dataset_clf_wine_quality import Dataset4CLFWineQuality
 from src.decision_tree import DecisionTree
-from src.saving_strategy_4SL import SavingStrategy4SL
-from src.plotting_strategy_4LR import PlottingStrategy4LR
-from src.plotting_strategy_4CLF import PlottingStrategy4CLF
+from src.saving_strategy_sl import SavingStrategy4SL
+from src.plotting_strategy_lr import PlottingStrategy4LR
+from src.plotting_strategy_clf import PlottingStrategy4CLF
 
 __all__ = [
     'Polynomial',
