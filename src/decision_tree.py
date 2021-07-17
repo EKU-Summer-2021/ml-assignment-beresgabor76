@@ -4,11 +4,9 @@ Module
 import os
 import datetime
 import pandas as pd
-from sklearn import tree
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import cross_val_predict, GridSearchCV
 from sklearn.tree import DecisionTreeClassifier
-import matplotlib.pyplot as plt
 
 
 class DecisionTree:
@@ -25,8 +23,19 @@ class DecisionTree:
         self.__prediction = None
         self.__parent_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                          '../results/classification')
+        self.__sub_dir = self.__make_save_dir()
         self.__saving_strategy = saving_strategy
         self.__plotting_strategy = plotting_strategy
+
+    def __make_save_dir(self):
+        resolution = datetime.timedelta(seconds=10)
+        save_time = datetime.datetime.now() \
+                    - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
+        sub_dir = save_time.strftime('%Y-%m-%d %H:%M:%S')
+        if not os.path.exists(os.path.join(os.path.dirname(__file__), self.__parent_dir, sub_dir)):
+            os.chdir(self.__parent_dir)
+            os.mkdir(sub_dir)
+        return sub_dir
 
     def determine_hyperparameters(self, train_set_x, train_set_y):
         params = {'criterion': ['gini', 'entropy'], 'max_depth': [4, 5, 6],
@@ -81,13 +90,12 @@ class DecisionTree:
         """
         Plots out the tree as well as confusion matrix fpr the test
         """
-        self.__plotting_strategy.plot_results(self.__target,
-                                              self.__prediction, self.__parent_dir)
+        self.__plotting_strategy.plot_results(self.__target, self.__prediction,
+                                              self.__parent_dir, self.__sub_dir)
 
     def save_results(self):
         """
         Saves test dataset with target values and prediction results with errors
         """
-        self.__saving_strategy.save_results(self.__test_set,
-                                            self.__target,
-                                            self.__prediction, self.__parent_dir)
+        self.__saving_strategy.save_results(self.__test_set, self.__target, self.__prediction,
+                                            self.__parent_dir, self.__sub_dir)

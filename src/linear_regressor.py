@@ -5,7 +5,6 @@ import os
 import datetime
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-import matplotlib.pyplot as plt
 
 
 class LinearRegressor:
@@ -24,8 +23,19 @@ class LinearRegressor:
         self.__prediction = None
         self.__parent_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                          '../results/linear_regression')
+        self.__sub_dir = self.__make_save_dir()
         self.__saving_strategy = saving_strategy
         self.__plotting_strategy = plotting_strategy
+
+    def __make_save_dir(self):
+        resolution = datetime.timedelta(seconds=10)
+        save_time = datetime.datetime.now() \
+                    - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
+        sub_dir = save_time.strftime('%Y-%m-%d %H:%M:%S')
+        if not os.path.exists(os.path.join(os.path.dirname(__file__), self.__parent_dir, sub_dir)):
+            os.chdir(self.__parent_dir)
+            os.mkdir(sub_dir)
+        return sub_dir
 
     def train(self, train_set_x, train_set_y):
         """
@@ -58,13 +68,12 @@ class LinearRegressor:
         """
         Plots out how the predicted values approximate the real ones
         """
-        self.__plotting_strategy.plot_results(self.__target,
-                                              self.__prediction, self.__parent_dir)
+        self.__plotting_strategy.plot_results(self.__target, self.__prediction,
+                                              self.__parent_dir, self.__sub_dir)
 
     def save_results(self):
         """
         Saves test dataset with target values and prediction results with errors
         """
-        self.__saving_strategy.save_results(self.__test_set,
-                                            self.__target,
-                                            self.__prediction, self.__parent_dir)
+        self.__saving_strategy.save_results(self.__test_set, self.__target, self.__prediction,
+                                            self.__parent_dir, self.__sub_dir)
