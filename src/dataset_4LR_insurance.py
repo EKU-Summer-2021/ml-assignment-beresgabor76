@@ -10,7 +10,7 @@ class Dataset4LRInsurance(Dataset4LR, ABC):
     Class intended to store and prepare insurance data for linear regression
     """
 
-    def __init__(self, test_size, random_state):
+    def __init__(self, test_size=0.2, random_state=30):
         super().__init__('insurance.csv', test_size, random_state)
 
     def _categories_encoding(self):

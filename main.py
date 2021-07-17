@@ -1,4 +1,3 @@
-from src import InsuranceData
 from src import LinearRegressor
 from src import Dataset4LRInsurance
 from src import Dataset4CLFWineQuality
@@ -9,8 +8,6 @@ from src import PlottingStrategy4CLF
 
 
 if __name__ == '__main__':
-    #dataset1 = InsuranceData(test_size=0.2, random_state=20)
-
     dataset1 = Dataset4LRInsurance(test_size=0.2, random_state=20)
     dataset1.prepare()
     dataset1.print_correlation()
