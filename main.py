@@ -5,12 +5,15 @@ from src import LinearRegressor
 from src import Dataset4CLFWineQuality
 from src import DecisionTree
 from src import PlottingStrategy4CLF
-
+from src import Dataset4ULStudentsPerformance
+from src import DbscanClustering
+from src import SavingStrategy4UL
+from src import PlottingStrategy4CLU
 
 if __name__ == '__main__':
-    dataset1 = Dataset4LRInsurance(test_size=0.2, random_state=20)
+
+    dataset1 = Dataset4LRInsurance(test_size=0.2, random_state=25)
     dataset1.prepare()
-    dataset1.print_correlation()
     regressor = LinearRegressor(SavingStrategy4SL(), PlottingStrategy4LR())
     regressor.train(dataset1.train_set_x, dataset1.train_set_y)
     regressor.test(dataset1.test_data, dataset1.test_set_x, dataset1.test_set_y)
@@ -26,4 +29,12 @@ if __name__ == '__main__':
     tree_clf.plot_results()
     tree_clf.save_results()
 
-
+    dataset3 = Dataset4ULStudentsPerformance()
+    dataset3.prepare()
+    dbscan = DbscanClustering(eps=1.2, min_samples=17,
+                              saving_strategy=SavingStrategy4UL(),
+                              plotting_strategy=PlottingStrategy4CLU())
+    dbscan.clustering(dataset3.unscaled_dataset, dataset3.dataset)
+    dbscan.save_results()
+    dbscan.plot_clusters()
+    dbscan.test_clustering()

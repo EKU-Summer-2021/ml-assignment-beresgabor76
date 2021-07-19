@@ -25,11 +25,3 @@ class Dataset4LR(Dataset4SL, ABC):
         x_scaled_arr = scaler.transform(self.test_set_x)
         self.test_set_x = pd.DataFrame(x_scaled_arr, columns=self.test_set_x.columns)
 
-    def print_correlation(self):
-        """
-        Prints out correlation values between input and output data
-        """
-        dataset = pd.concat([self._dataset_x, self._dataset_y], axis=1)
-        corr_matrix = dataset.corr()
-        print('Correlation values with charges attribute:')
-        print(corr_matrix['charges'].sort_values(ascending=False))

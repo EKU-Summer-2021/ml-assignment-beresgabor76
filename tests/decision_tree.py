@@ -9,14 +9,15 @@ from src import PlottingStrategy4CLF
 
 class DecisionTreeTest(unittest.TestCase):
     def setUp(self):
-        self.__data = Dataset4CLFWineQuality(test_size=0.2)
+        self.__test_size = 0.2
+        self.__data = Dataset4CLFWineQuality(test_size=self.__test_size)
         self.__tree_clf = DecisionTree(SavingStrategy4SL(), PlottingStrategy4CLF())
 
     def test_test(self):
         self.__data.prepare()
         self.__tree_clf.train(self.__data.train_set_x, self.__data.train_set_y)
         self.__tree_clf.test(self.__data.test_set_x, self.__data.test_set_y)
-        test_set_row_cnt = round(1599 * 0.2)
+        test_set_row_cnt = round(self.__data._dataset_x.shape[0] * self.__test_size)
         self.assertEqual(test_set_row_cnt, self.__tree_clf._prediction.shape[0])
 
     def test_plot_results(self):

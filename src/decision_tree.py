@@ -22,6 +22,8 @@ class DecisionTree(LearningAlgorithm):
         self._parent_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                          '../results/classification')
         self._sub_dir = self._make_save_dir()
+        self._logger = self._setup_logger(f'DecisionTreeLog{self._sub_dir}',
+                                          os.path.join(self._parent_dir, self._sub_dir, 'run.log'))
 
     def determine_hyperparameters(self, train_set_x, train_set_y):
         """
@@ -34,8 +36,8 @@ class DecisionTree(LearningAlgorithm):
                                    scoring='roc_auc_ovr',
                                    refit=True)
         grid_search.fit(train_set_x, train_set_y)
-        print('Best hyperparameters found by GridSearchCV:')
-        print(grid_search.best_params_)
+        self._logger.info('Best hyperparameters found by GridSearchCV:')
+        self._logger.info(grid_search.best_params_)
         self.__tree_clf = \
             DecisionTreeClassifier(criterion=grid_search.best_params_['criterion'],
                                    max_depth=grid_search.best_params_['max_depth'],
@@ -52,19 +54,14 @@ class DecisionTree(LearningAlgorithm):
                                              train_set_y,
                                              cv=3)
         conf_mx = confusion_matrix(train_set_y, train_set_y_pred)
-        print('Confusion matrix on train set:')
-        print(conf_mx)
+        self._logger.info('Confusion matrix on train set:')
+        self._logger.info(f'\n{conf_mx}')
 
     def test(self, test_set_x, test_set_y):
         """
         Tests the LinearRegression model with passed data
         """
-        self._test_set = pd.DataFrame(test_set_x.copy())
-        self._test_set.reset_index(inplace=True)
-        self._test_set = self._test_set.drop('index', axis=1)
-        self._target = pd.DataFrame(test_set_y)
-        self._target.reset_index(inplace=True)
-        self._target = self._target.drop('index', axis=1)
+        self._copy_datasets(test_set_x, test_set_x, test_set_y)
         test_set_y_pred = self.__tree_clf.predict(test_set_x)
         self._prediction = pd.DataFrame(test_set_y_pred,
                                         index=test_set_x.index,
@@ -72,5 +69,5 @@ class DecisionTree(LearningAlgorithm):
         self._prediction.reset_index(inplace=True)
         self._prediction = self._prediction.drop('index', axis=1)
         conf_mx = confusion_matrix(test_set_y, test_set_y_pred)
-        print('Confusion matrix on test set:')
-        print(conf_mx)
+        self._logger.info('Confusion matrix on test set:')
+        self._logger.info(f'\n{conf_mx}')
