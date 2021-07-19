@@ -9,6 +9,10 @@ class PlottingStrategy:
     """
     def plot_results(self, target, prediction, save_dir):
         """
-        Plots results of learning algorithm's test
+        Saves plot results of learning algorithm's test to png file
         """
-        pass
+
+    def plot_show(self, target, prediction):
+        """
+        Shows plot results of learning algorithm's test
+        """

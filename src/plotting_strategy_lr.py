@@ -21,3 +21,13 @@ class PlottingStrategy4LR(PlottingStrategy):
         plt.scatter(target, prediction, alpha=0.5)
         plot_file = os.path.join(os.path.dirname(__file__), save_dir, 'results.png')
         fig.savefig(plot_file)
+
+    def plot_show(self, target, prediction):
+        """
+        Shows plot results of learning algorithm's test
+        """
+        min_x = min_y = target.min()
+        max_x = max_y = target.max()
+        plt.plot([min_x, max_x], [min_y, max_y])
+        plt.scatter(target, prediction, alpha=0.5)
+        plt.show()

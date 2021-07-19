@@ -12,3 +12,7 @@ class SavingStrategy:
         Saves results to csv file
         """
 
+    def print_result(self, test_data, target, prediction):
+        """
+        Prints out results to console
+        """

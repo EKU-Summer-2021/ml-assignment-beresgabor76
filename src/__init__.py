@@ -2,7 +2,6 @@
 Example module for template project.
 Pylint will check code in the src directory only!
 '''
-from src.polynomial import Polynomial
 from src.dataset_sl import Dataset4SL
 from src.dataset_lr import Dataset4LR
 from src.dataset_clf import Dataset4CLF
@@ -17,7 +16,6 @@ from src.decision_tree import DecisionTree
 
 
 __all__ = [
-    'Polynomial',
     'Dataset4SL',
     'Dataset4LR',
     'Dataset4CLF',

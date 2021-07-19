@@ -11,7 +11,6 @@ class PlottingStrategy4CLF(PlottingStrategy):
     """
     Results' plotting strategy implementation for Classification
     """
-
     def plot_results(self, target, prediction, save_dir):
         """
         Plots out the tree as well as confusion matrix fpr the test
@@ -23,3 +22,13 @@ class PlottingStrategy4CLF(PlottingStrategy):
         plt.legend()
         plot_file = os.path.join(os.path.dirname(__file__), save_dir, 'results.png')
         fig.savefig(plot_file)
+
+    def plot_show(self, target, prediction):
+        """
+        Shows plot results of learning algorithm's test
+        """
+        plt.hist(pd.concat([target, prediction], axis=1),
+                 color=['blue', 'red'], label=['Actual', 'Prediction'],
+                 histtype='bar', bins=6)
+        plt.legend()
+        plt.show()

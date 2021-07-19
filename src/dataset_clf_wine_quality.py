@@ -14,6 +14,9 @@ class Dataset4CLFWineQuality(Dataset4CLF, ABC):
     def __init__(self, test_size=0.2, random_state=20):
         super().__init__('winequality-red.csv', test_size, random_state)
 
+    def __repr__(self):
+        return self.test_data
+
     def _categories_encoding(self):
         """
         No category attributes to be encoded
