@@ -1,11 +1,10 @@
 """
 Module for dataset class used in Classification task
 """
-from abc import ABC
 from src import Dataset4SL
 
 
-class Dataset4CLF(Dataset4SL, ABC):
+class Dataset4CLF(Dataset4SL):
     """
     Class for Classification task derived from Dataset4SL class
     """

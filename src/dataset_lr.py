@@ -1,13 +1,12 @@
 """
 Module for dataset class used in Linear Regression
 """
-from abc import ABC
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from src import Dataset4SL
 
 
-class Dataset4LR(Dataset4SL, ABC):
+class Dataset4LR(Dataset4SL):
     """
     Class fpr Linear Regression derived from Dataset4SL class
     """

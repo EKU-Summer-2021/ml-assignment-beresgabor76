@@ -1,11 +1,10 @@
 """
 Module for class intended to store and prepare insurance data for linear regression
 """
-from abc import ABC
 from src import Dataset4LR
 
 
-class Dataset4LRInsurance(Dataset4LR, ABC):
+class Dataset4LRInsurance(Dataset4LR):
     """
     Class intended to store and prepare insurance data for linear regression
     """
