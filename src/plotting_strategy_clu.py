@@ -16,16 +16,16 @@ class PlottingStrategy4CLU(PlottingStrategy):
         """
         Plots out the clusters as scatter plot
         """
-        df = pd.concat([test_set_x, prediction], axis=1)
+        df_dataset = pd.concat([test_set_x, prediction], axis=1)
         n_components = 4
         pca = PCA(n_components=n_components)
-        components = pca.fit_transform(df)
+        components = pca.fit_transform(df_dataset)
         total_var = pca.explained_variance_ratio_.sum() * 100
         labels = {str(i): f"PC {i + 1}" for i in range(n_components)}
         labels['color'] = 'Label'
         fig = px.scatter_matrix(
             components,
-            color=df['Label'],
+            color=df_dataset['Label'],
             dimensions=range(n_components),
             labels=labels,
             title=f'Total Explained Variance: {total_var:.2f}%',
@@ -34,8 +34,7 @@ class PlottingStrategy4CLU(PlottingStrategy):
         plot_file = os.path.join(os.path.dirname(__file__), save_dir, 'clusters.png')
         fig.write_image(plot_file)
 
-    def plot_show(self, test_set_x, prediction):
+    def plot_show(self, test_set_y, prediction):
         """
         Shows plot results of learning algorithm's test
         """
-

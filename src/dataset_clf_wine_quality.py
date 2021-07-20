@@ -2,7 +2,7 @@
 Module for class intended to store and prepare wine quality data
 for classification with Decision Tree
 """
-from src import Dataset4CLF
+from src.dataset_clf import Dataset4CLF
 
 
 class Dataset4CLFWineQuality(Dataset4CLF):

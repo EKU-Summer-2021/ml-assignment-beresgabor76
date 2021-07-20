@@ -1,7 +1,7 @@
 """
 Module for Dataset class for Students' performance
 """
-from src import Dataset4UL
+from src.dataset_ul import Dataset4UL
 
 
 class Dataset4ULStudentsPerformance(Dataset4UL):
@@ -25,4 +25,3 @@ class Dataset4ULStudentsPerformance(Dataset4UL):
                                        [['free/reduced', 'standard']])
         self._category_ordinal_encoder('test preparation course',
                                        [['none', 'completed']])
-

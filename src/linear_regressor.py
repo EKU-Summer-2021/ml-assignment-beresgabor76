@@ -4,7 +4,7 @@ Module for Linear Regression class
 import os
 import pandas as pd
 from sklearn.linear_model import LinearRegression
-from src import LearningAlgorithm
+from src.learning_algorithm import LearningAlgorithm
 
 
 class LinearRegressor(LearningAlgorithm):
@@ -38,7 +38,7 @@ class LinearRegressor(LearningAlgorithm):
         """
         self.__lin_reg.fit(train_set_x, train_set_y)
         self._logger.info('Correlation values with charges attribute in train set:')
-        self._logger.info(f'\n{self.__correlation(train_set_x, train_set_y)}')
+        self._logger.info('\n%s', self.__correlation(train_set_x, train_set_y))
 
     def test(self, unscaled_test_set_x, test_set_x, test_set_y):
         """
@@ -46,10 +46,9 @@ class LinearRegressor(LearningAlgorithm):
         """
         self._copy_datasets(unscaled_test_set_x, test_set_x, test_set_y)
         score = self.__lin_reg.score(test_set_x, test_set_y)
-        self._logger.info("\nScore for test set: " + str(score))
+        self._logger.info('\nScore for test set: %f', score)
         self._prediction = pd.DataFrame(self.__lin_reg.predict(test_set_x),
                                         index=test_set_x.index,
                                         columns=['prediction'])
         self._prediction.reset_index(inplace=True)
         self._prediction = self._prediction.drop('index', axis=1)
-

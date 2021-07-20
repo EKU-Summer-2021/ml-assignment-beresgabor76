@@ -6,7 +6,7 @@ import pandas as pd
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import cross_val_predict, GridSearchCV
 from sklearn.tree import DecisionTreeClassifier
-from src import LearningAlgorithm
+from src.learning_algorithm import LearningAlgorithm
 
 
 class DecisionTree(LearningAlgorithm):
@@ -55,7 +55,7 @@ class DecisionTree(LearningAlgorithm):
                                              cv=3)
         conf_mx = confusion_matrix(train_set_y, train_set_y_pred)
         self._logger.info('Confusion matrix on train set:')
-        self._logger.info(f'\n{conf_mx}')
+        self._logger.info('\n%s', conf_mx)
 
     def test(self, test_set_x, test_set_y):
         """
@@ -70,4 +70,4 @@ class DecisionTree(LearningAlgorithm):
         self._prediction = self._prediction.drop('index', axis=1)
         conf_mx = confusion_matrix(test_set_y, test_set_y_pred)
         self._logger.info('Confusion matrix on test set:')
-        self._logger.info(f'\n{conf_mx}')
+        self._logger.info('\n%s', conf_mx)

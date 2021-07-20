@@ -5,8 +5,10 @@ import os
 import pandas as pd
 from sklearn.cluster import DBSCAN
 from sklearn.model_selection import train_test_split
-from src import LearningAlgorithm, SavingStrategy4SL, PlottingStrategy4CLF
-from src import DecisionTree
+from src.learning_algorithm import LearningAlgorithm
+from src.decision_tree import DecisionTree
+from src.saving_strategy_sl import SavingStrategy4SL
+from src.plotting_strategy_clf import PlottingStrategy4CLF
 
 
 class DbscanClustering(LearningAlgorithm):
@@ -26,6 +28,9 @@ class DbscanClustering(LearningAlgorithm):
         self._logger.info(f'Parameters: eps={self.__eps}, min_samples={self.__min_samples}')
 
     def clustering(self, unscaled_dataset, dataset):
+        """
+        Creates clusters from the feature-scaled dataset, and put the labels into prediction
+        """
         self._copy_datasets(unscaled_dataset, dataset, dataset.index)
         self.__dbscan = DBSCAN(eps=self.__eps, min_samples=self.__min_samples)
         self.__dbscan.fit(dataset)
@@ -33,6 +38,9 @@ class DbscanClustering(LearningAlgorithm):
         self._prediction = pd.DataFrame(self.__dbscan.labels_, columns=['Label'])
 
     def test_clustering(self):
+        """
+        Tests the clustering with the use of a decision tree classifier
+        """
         dataset = pd.concat([self._test_set_x, self._test_set_y], axis=1)
         dataset = dataset[dataset['Label'] != -1]
         train_set, test_set = train_test_split(dataset,

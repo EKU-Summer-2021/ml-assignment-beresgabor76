@@ -1,17 +1,16 @@
-from src import Dataset4LRInsurance
-from src import SavingStrategy4SL
-from src import PlottingStrategy4LR
-from src import LinearRegressor
-from src import Dataset4CLFWineQuality
-from src import DecisionTree
-from src import PlottingStrategy4CLF
-from src import Dataset4ULStudentsPerformance
-from src import DbscanClustering
-from src import SavingStrategy4UL
-from src import PlottingStrategy4CLU
+from src.dataset_lr_insurance import Dataset4LRInsurance
+from src.saving_strategy_sl import SavingStrategy4SL
+from src.plotting_strategy_lr import PlottingStrategy4LR
+from src.linear_regressor import LinearRegressor
+from src.dataset_clf_wine_quality import Dataset4CLFWineQuality
+from src.decision_tree import DecisionTree
+from src.plotting_strategy_clf import PlottingStrategy4CLF
+from src.dataset_ul_students import Dataset4ULStudentsPerformance
+from src.dbscan import DbscanClustering
+from src.saving_strategy_ul import SavingStrategy4UL
+from src.plotting_strategy_clu import PlottingStrategy4CLU
 
 if __name__ == '__main__':
-
     dataset1 = Dataset4LRInsurance(test_size=0.2, random_state=25)
     dataset1.prepare()
     regressor = LinearRegressor(SavingStrategy4SL(), PlottingStrategy4LR())
