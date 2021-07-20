@@ -1,5 +1,5 @@
 import unittest
-from src import Dataset4CLFWineQuality
+from src.dataset_clf_wine_quality import Dataset4CLFWineQuality
 
 
 class Dataset4CLFWineQualityTest(unittest.TestCase):

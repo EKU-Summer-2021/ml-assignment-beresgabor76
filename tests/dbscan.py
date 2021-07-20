@@ -4,10 +4,10 @@ import datetime
 
 import numpy as np
 
-from src import Dataset4ULStudentsPerformance
-from src import DbscanClustering
-from src import SavingStrategy4UL
-from src import PlottingStrategy4CLU
+from src.dataset_ul_students import Dataset4ULStudentsPerformance
+from src.dbscan import DbscanClustering
+from src.saving_strategy_ul import SavingStrategy4UL
+from src.plotting_strategy_clu import PlottingStrategy4CLU
 
 
 class DbscanClusteringTest(unittest.TestCase):

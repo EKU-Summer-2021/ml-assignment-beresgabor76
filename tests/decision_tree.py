@@ -1,10 +1,10 @@
 import unittest
 import os
 import datetime
-from src import Dataset4CLFWineQuality
-from src import DecisionTree
-from src import SavingStrategy4SL
-from src import PlottingStrategy4CLF
+from src.dataset_clf_wine_quality import Dataset4CLFWineQuality
+from src.decision_tree import DecisionTree
+from src.saving_strategy_sl import SavingStrategy4SL
+from src.plotting_strategy_clf import PlottingStrategy4CLF
 
 
 class DecisionTreeTest(unittest.TestCase):

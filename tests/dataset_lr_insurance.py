@@ -1,5 +1,5 @@
 import unittest
-from src import Dataset4LRInsurance
+from src.dataset_lr_insurance import Dataset4LRInsurance
 
 
 class Dataset4LRInsuranceTest(unittest.TestCase):

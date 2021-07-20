@@ -1,10 +1,10 @@
 import unittest
 import os
 import datetime
-from src import Dataset4LRInsurance
-from src import LinearRegressor
-from src import SavingStrategy4SL
-from src import PlottingStrategy4LR
+from src.dataset_lr_insurance import Dataset4LRInsurance
+from src.linear_regressor import LinearRegressor
+from src.saving_strategy_sl import SavingStrategy4SL
+from src.plotting_strategy_lr import PlottingStrategy4LR
 
 
 class LinearRegressorTest(unittest.TestCase):

@@ -1,5 +1,5 @@
 import unittest
-from src import Dataset4ULStudentsPerformance
+from src.dataset_ul_students import Dataset4ULStudentsPerformance
 
 
 class Dataset4ULStudentsPerformanceTest(unittest.TestCase):
