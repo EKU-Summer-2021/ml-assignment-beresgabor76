@@ -12,7 +12,7 @@ from src.plotting_strategy_clu import PlottingStrategy4CLU
 from src.mlp_regressor import MlpRegressor
 
 if __name__ == '__main__':
-
+    """
     dataset1 = Dataset4LRInsurance(test_size=0.2, random_state=25)
     dataset1.prepare()
     regressor = LinearRegressor(SavingStrategy4SL(), PlottingStrategy4LR())
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     tree_clf.test(dataset2.test_set_x, dataset2.test_set_y)
     tree_clf.plot_results()
     tree_clf.save_results()
-
+    
     dataset3 = Dataset4ULStudentsPerformance()
     dataset3.prepare()
     dbscan = DbscanClustering(eps=1.2, min_samples=17,
@@ -39,11 +39,11 @@ if __name__ == '__main__':
     dbscan.save_results()
     dbscan.plot_clusters()
     dbscan.test_clustering()
-
+    """
     dataset1 = Dataset4LRInsurance(test_size=0.2, random_state=25)
     dataset1.prepare()
     regressor = MlpRegressor(SavingStrategy4SL(), PlottingStrategy4LR())
-    #regressor.determine_parameters(dataset1.train_set_x, dataset1.train_set_y)
+    regressor.determine_parameters(dataset1.train_set_x, dataset1.train_set_y)
     regressor.train(dataset1.train_set_x, dataset1.train_set_y)
     regressor.test(dataset1.test_data, dataset1.test_set_x, dataset1.test_set_y)
     regressor.plot_results()

@@ -20,7 +20,7 @@ class MlpRegressor(LearningAlgorithm):
         self._logger = self._setup_logger(f'MlpRegressionLog{self._sub_dir}',
                                           os.path.join(self._parent_dir, self._sub_dir, 'run.log'))
         self.__activation = 'relu'
-        self.__hidden_layer_sizes = (25, 50, 100, 50, 25)
+        self.__hidden_layer_sizes = (5, 10, 20, 10, 5)
         self.__learning_rate = 'adaptive'
         self.__learning_rate_init = 0.001
         self.__momentum = 0.9
@@ -49,6 +49,9 @@ class MlpRegressor(LearningAlgorithm):
                                   max_fun=50000)
 
     def __log_params(self):
+        """
+        Logs MLPRegressor training parameters
+        """
         params = {'activation': self.__activation,
                   'hidden_layer_sizes': self.__hidden_layer_sizes,
                   'learning_rate': self.__learning_rate,
@@ -75,10 +78,14 @@ class MlpRegressor(LearningAlgorithm):
         grid_search.fit(train_set_x, train_set_y)
         self._logger.info('Best parameters found by GridSearchCV:')
         self._logger.info(grid_search.best_params_)
-        best_params = {'activation': grid_search.best_params_['activation'],
-                       'hidden_layer_sizes': grid_search.best_params_['hidden_layer_sizes'],
-                       'learning_rate_init': grid_search.best_params_['learning_rate_init'],
-                       'momentum': grid_search.best_params_['momentum']}
+        self.__activation = grid_search.best_params_['activation']
+        self.__hidden_layer_sizes = grid_search.best_params_['hidden_layer_sizes']
+        self.__learning_rate_init = grid_search.best_params_['learning_rate_init']
+        self.__momentum = grid_search.best_params_['momentum']
+        best_params = {'activation': self.__activation,
+                       'hidden_layer_sizes': self.__hidden_layer_sizes,
+                       'learning_rate_init': self.__learning_rate_init,
+                       'momentum': self.__momentum }
         self.__mlp.set_params(**best_params)
 
     def train(self, train_set_x, train_set_y):
