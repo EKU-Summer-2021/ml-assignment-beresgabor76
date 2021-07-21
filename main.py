@@ -9,8 +9,10 @@ from src.dataset_ul_students import Dataset4ULStudentsPerformance
 from src.dbscan import DbscanClustering
 from src.saving_strategy_ul import SavingStrategy4UL
 from src.plotting_strategy_clu import PlottingStrategy4CLU
+from src.mlp_regressor import MlpRegressor
 
 if __name__ == '__main__':
+
     dataset1 = Dataset4LRInsurance(test_size=0.2, random_state=25)
     dataset1.prepare()
     regressor = LinearRegressor(SavingStrategy4SL(), PlottingStrategy4LR())
@@ -37,3 +39,13 @@ if __name__ == '__main__':
     dbscan.save_results()
     dbscan.plot_clusters()
     dbscan.test_clustering()
+
+    dataset1 = Dataset4LRInsurance(test_size=0.2, random_state=25)
+    dataset1.prepare()
+    regressor = MlpRegressor(SavingStrategy4SL(), PlottingStrategy4LR())
+    #regressor.determine_parameters(dataset1.train_set_x, dataset1.train_set_y)
+    regressor.train(dataset1.train_set_x, dataset1.train_set_y)
+    regressor.test(dataset1.test_data, dataset1.test_set_x, dataset1.test_set_y)
+    regressor.plot_results()
+    regressor.save_results()
+

@@ -16,6 +16,7 @@ class SavingStrategy4SL(SavingStrategy):
         """
         results_df = pd.concat([unscaled_test_set_x, test_set_y, prediction], axis=1)
         results_df['error'] = results_df.iloc[:, -1] - results_df.iloc[:, -2]
+        results_df['error_pc'] = results_df.iloc[:, -1] / results_df.iloc[:, -3]
         results_df = results_df.round(2)
         results_df.sort_values(by=results_df.columns[-3], inplace=True)
         csv_file = os.path.join(os.path.dirname(__file__), save_dir, 'results.csv')

@@ -1,9 +1,6 @@
 import unittest
 import os
 import datetime
-
-import numpy as np
-
 from src.dataset_ul_students import Dataset4ULStudentsPerformance
 from src.dbscan import DbscanClustering
 from src.saving_strategy_ul import SavingStrategy4UL
