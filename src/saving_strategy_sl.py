@@ -18,7 +18,7 @@ class SavingStrategy4SL(SavingStrategy):
         results_df['error'] = results_df.iloc[:, -1] - results_df.iloc[:, -2]
         results_df['error_pc'] = results_df.iloc[:, -1] / results_df.iloc[:, -3]
         results_df = results_df.round(2)
-        results_df.sort_values(by=results_df.columns[-3], inplace=True)
+        results_df.sort_values(by=results_df.columns[-4], inplace=True)
         csv_file = os.path.join(os.path.dirname(__file__), save_dir, 'results.csv')
         results_df.to_csv(path_or_buf=csv_file, index=False)
 

@@ -18,6 +18,7 @@ class LinearRegressor(LearningAlgorithm):
         """
         super().__init__(saving_strategy, plotting_strategy)
         self.__lin_reg = LinearRegression()
+        self._is_scaled_x = True
         self._parent_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                          '../results/linear_regression')
         self._sub_dir = self._make_save_dir()
@@ -40,11 +41,12 @@ class LinearRegressor(LearningAlgorithm):
         self._logger.info('Correlation values with charges attribute in train set:')
         self._logger.info('\n%s', self.__correlation(train_set_x, train_set_y))
 
-    def test(self, unscaled_test_set_x, test_set_x, test_set_y):
+    def test(self, test_set_x, test_set_y, scaler):
         """
         Tests the LinearRegression model with passed data
         """
-        self._copy_datasets(unscaled_test_set_x, test_set_x, test_set_y)
+        self._copy_datasets(test_set_x, test_set_y)
+        self._x_scaler = scaler
         score = self.__lin_reg.score(test_set_x, test_set_y)
         self._logger.info('\nScore for test set: %f', score)
         self._prediction = pd.DataFrame(self.__lin_reg.predict(test_set_x),

@@ -9,6 +9,7 @@ import pandas as pd
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
 
 
 class Dataset4SL(ABC):
@@ -27,7 +28,8 @@ class Dataset4SL(ABC):
         self.train_set_y = None
         self.test_set_x = None
         self.test_set_y = None
-        self.test_data = None
+        self.x_scaler = MinMaxScaler(feature_range=(0, 1), copy=True)
+        self.y_scaler = MinMaxScaler(feature_range=(0, 1), copy=True)
 
     def prepare(self):
         """
@@ -96,3 +98,5 @@ class Dataset4SL(ABC):
         """
         Used in child class for feature scaling if necessary
         """
+
+

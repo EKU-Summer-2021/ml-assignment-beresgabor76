@@ -9,15 +9,17 @@ from src.dataset_ul_students import Dataset4ULStudentsPerformance
 from src.dbscan import DbscanClustering
 from src.saving_strategy_ul import SavingStrategy4UL
 from src.plotting_strategy_clu import PlottingStrategy4CLU
+from src.dataset_nn_insurance import Dataset4NNInsurance
 from src.mlp_regressor import MlpRegressor
 
+
 if __name__ == '__main__':
-    """
+
     dataset1 = Dataset4LRInsurance(test_size=0.2, random_state=25)
     dataset1.prepare()
     regressor = LinearRegressor(SavingStrategy4SL(), PlottingStrategy4LR())
     regressor.train(dataset1.train_set_x, dataset1.train_set_y)
-    regressor.test(dataset1.test_data, dataset1.test_set_x, dataset1.test_set_y)
+    regressor.test(dataset1.test_set_x, dataset1.test_set_y, dataset1.scaler)
     regressor.plot_results()
     regressor.save_results()
 
@@ -35,17 +37,27 @@ if __name__ == '__main__':
     dbscan = DbscanClustering(eps=1.2, min_samples=17,
                               saving_strategy=SavingStrategy4UL(),
                               plotting_strategy=PlottingStrategy4CLU())
-    dbscan.clustering(dataset3.unscaled_dataset, dataset3.dataset)
+    dbscan.clustering(dataset3.dataset, dataset3.scaler)
     dbscan.save_results()
     dbscan.plot_clusters()
     dbscan.test_clustering()
-    """
-    dataset1 = Dataset4LRInsurance(test_size=0.2, random_state=25)
-    dataset1.prepare()
+
+    dataset4 = Dataset4LRInsurance(test_size=0.2, random_state=25)
+    dataset4.prepare()
     regressor = MlpRegressor(SavingStrategy4SL(), PlottingStrategy4LR())
-    regressor.determine_parameters(dataset1.train_set_x, dataset1.train_set_y)
-    regressor.train(dataset1.train_set_x, dataset1.train_set_y)
-    regressor.test(dataset1.test_data, dataset1.test_set_x, dataset1.test_set_y)
+    regressor.set_parameters(activation='relu', hidden_layer_sizes=(5, 10, 20, 10, 5), max_iter=10000)
+    #regressor.determine_parameters(dataset4.train_set_x, dataset4.train_set_y)
+    regressor.train(dataset4.train_set_x, dataset4.train_set_y)
+    regressor.test(dataset4.test_set_x, dataset4.test_set_y, dataset4.x_scaler)
     regressor.plot_results()
     regressor.save_results()
 
+    dataset5 = Dataset4NNInsurance(test_size=0.2, random_state=25)
+    dataset5.prepare()
+    regressor = MlpRegressor(SavingStrategy4SL(), PlottingStrategy4LR())
+    regressor.set_parameters(activation='tanh', hidden_layer_sizes=(5, 10, 20, 10, 5), max_iter=5000)
+    #regressor.determine_parameters(dataset5.train_set_x, dataset5.train_set_y)
+    regressor.train(dataset5.train_set_x, dataset5.train_set_y)
+    regressor.test(dataset5.test_set_x, dataset5.test_set_y, dataset5.x_scaler, dataset5.y_scaler)
+    regressor.plot_results()
+    regressor.save_results()

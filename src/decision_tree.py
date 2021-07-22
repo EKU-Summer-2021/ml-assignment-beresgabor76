@@ -61,7 +61,7 @@ class DecisionTree(LearningAlgorithm):
         """
         Tests the LinearRegression model with passed data
         """
-        self._copy_datasets(test_set_x, test_set_x, test_set_y)
+        self._copy_datasets(test_set_x, test_set_y)
         test_set_y_pred = self.__tree_clf.predict(test_set_x)
         self._prediction = pd.DataFrame(test_set_y_pred,
                                         index=test_set_x.index,

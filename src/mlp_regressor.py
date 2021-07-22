@@ -19,7 +19,8 @@ class MlpRegressor(LearningAlgorithm):
         self._sub_dir = self._make_save_dir()
         self._logger = self._setup_logger(f'MlpRegressionLog{self._sub_dir}',
                                           os.path.join(self._parent_dir, self._sub_dir, 'run.log'))
-        self.__activation = 'relu'
+        self._is_scaled_x = True
+        self.__activation = 'tanh'
         self.__hidden_layer_sizes = (5, 10, 20, 10, 5)
         self.__learning_rate = 'adaptive'
         self.__learning_rate_init = 0.001
@@ -48,19 +49,20 @@ class MlpRegressor(LearningAlgorithm):
                                   n_iter_no_change=10,
                                   max_fun=50000)
 
+    def set_parameters(self, activation, hidden_layer_sizes, max_iter):
+        self.__activation = activation
+        self.__hidden_layer_sizes = hidden_layer_sizes
+        self.__max_iter = max_iter
+        params = {'activation': self.__activation,
+                  'hidden_layer_sizes': self.__hidden_layer_sizes,
+                  'max_iter': self.__max_iter}
+        self.__mlp.set_params(**params)
+
     def __log_params(self):
         """
         Logs MLPRegressor training parameters
         """
-        params = {'activation': self.__activation,
-                  'hidden_layer_sizes': self.__hidden_layer_sizes,
-                  'learning_rate': self.__learning_rate,
-                  'learning_rate_init': self.__learning_rate_init,
-                  'momentum': self.__momentum,
-                  'max_iter': self.__max_iter}
         self._logger.info('Set parameters for MLPRegressor:')
-        self._logger.info(params)
-        self._logger.info('All parameters for MLPRegressor:')
         self._logger.info(self.__mlp.get_params())
 
     def determine_parameters(self, train_set_x, train_set_y):
@@ -68,9 +70,7 @@ class MlpRegressor(LearningAlgorithm):
         GridSearchCV
         """
         params = {'activation': ['relu', 'identity'],
-                  'hidden_layer_sizes': [(5, 10, 20, 10, 5), (20, 50, 100, 50, 20)],
-                  'learning_rate_init': [0.001, 0.01],
-                  'momentum': [0.9, 0.5]}
+                  'hidden_layer_sizes': [(5, 10, 20, 10, 5), (20, 50, 100, 50, 20)]}
         grid_search = GridSearchCV(estimator=self.__mlp,
                                    param_grid=params,
                                    scoring='neg_mean_squared_error',
@@ -80,12 +80,8 @@ class MlpRegressor(LearningAlgorithm):
         self._logger.info(grid_search.best_params_)
         self.__activation = grid_search.best_params_['activation']
         self.__hidden_layer_sizes = grid_search.best_params_['hidden_layer_sizes']
-        self.__learning_rate_init = grid_search.best_params_['learning_rate_init']
-        self.__momentum = grid_search.best_params_['momentum']
         best_params = {'activation': self.__activation,
-                       'hidden_layer_sizes': self.__hidden_layer_sizes,
-                       'learning_rate_init': self.__learning_rate_init,
-                       'momentum': self.__momentum }
+                       'hidden_layer_sizes': self.__hidden_layer_sizes }
         self.__mlp.set_params(**best_params)
 
     def train(self, train_set_x, train_set_y):
@@ -96,15 +92,19 @@ class MlpRegressor(LearningAlgorithm):
         self.__mlp.fit(train_set_x, train_set_y)
         self._logger.info('Iterations during training ann: %d', self.__mlp.n_iter_)
 
-    def test(self, unscaled_test_set_x, test_set_x, test_set_y):
+    def test(self, test_set_x, test_set_y, x_scaler, y_scaler=None):
         """
         Tests the neural network
         """
-        self._copy_datasets(unscaled_test_set_x, test_set_x, test_set_y)
+        self._copy_datasets(test_set_x, test_set_y)
+        self._x_scaler = x_scaler
+        if y_scaler is not None:
+            self._is_scaled_y = True
+            self._y_scaler = y_scaler
         self._prediction = pd.DataFrame(self.__mlp.predict(test_set_x),
                                         index=test_set_x.index,
                                         columns=['prediction'])
         self._prediction.reset_index(inplace=True)
         self._prediction = self._prediction.drop('index', axis=1)
         self._logger.info('Score for test prediction: %f',
-                          self.__mlp.score(test_set_x, test_set_y))
+                          self.__mlp.score(test_set_x, test_set_y.iloc[:, 1]))

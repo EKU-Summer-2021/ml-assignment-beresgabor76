@@ -17,12 +17,12 @@ class DbscanClusteringTest(unittest.TestCase):
 
     def test_clustering(self):
         self.__data.prepare()
-        self.__dbscan.clustering(self.__data.unscaled_dataset, self.__data.dataset)
+        self.__dbscan.clustering(self.__data.dataset, self.__data.scaler)
         self.assertEqual(False, self.__dbscan._prediction.empty)
 
     def test_plot_clusters(self):
         self.__data.prepare()
-        self.__dbscan.clustering(self.__data.unscaled_dataset, self.__data.dataset)
+        self.__dbscan.clustering(self.__data.dataset, self.__data.scaler)
         self.__dbscan.plot_clusters()
         resolution = datetime.timedelta(seconds=10)
         save_time = datetime.datetime.now() \
@@ -35,7 +35,7 @@ class DbscanClusteringTest(unittest.TestCase):
 
     def test_save_results(self):
         self.__data.prepare()
-        self.__dbscan.clustering(self.__data.unscaled_dataset, self.__data.dataset)
+        self.__dbscan.clustering(self.__data.dataset, self.__data.scaler)
         self.__dbscan.plot_clusters()
         self.__dbscan.save_results()
         resolution = datetime.timedelta(seconds=10)

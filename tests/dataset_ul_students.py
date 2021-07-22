@@ -8,8 +8,6 @@ class Dataset4ULStudentsPerformanceTest(unittest.TestCase):
 
     def test_prepare(self):
         self.__data.prepare()
-        self.assertEqual(1000, self.__data.unscaled_dataset.shape[0])
-        self.assertEqual(8, self.__data.unscaled_dataset.shape[1])
         self.assertEqual(1000, self.__data.dataset.shape[0])
         self.assertEqual(12, self.__data.dataset.shape[1])
 

@@ -14,19 +14,19 @@ class LearningAlgorithm(ABC):
     """
     def __init__(self, saving_strategy, plotting_strategy):
         super().__init__()
-        self._unscaled_test_set_x = None
         self._test_set_x = None
         self._test_set_y = None
+        self._is_scaled_x = False
+        self._x_scaler = None
+        self._is_scaled_y = False
+        self._y_scaler = None
         self._prediction = None
         self._parent_dir = None
         self._sub_dir = None
         self.__saving_strategy = saving_strategy
         self.__plotting_strategy = plotting_strategy
 
-    def _copy_datasets(self, unscaled_test_set_x, test_set_x, test_set_y):
-        self._unscaled_test_set_x = pd.DataFrame(unscaled_test_set_x.copy())
-        self._unscaled_test_set_x.reset_index(inplace=True)
-        self._unscaled_test_set_x.drop('index', axis=1, inplace=True)
+    def _copy_datasets(self, test_set_x, test_set_y):
         self._test_set_x = pd.DataFrame(test_set_x.copy())
         self._test_set_x.reset_index(inplace=True)
         self._test_set_x.drop('index', axis=1, inplace=True)
@@ -63,7 +63,15 @@ class LearningAlgorithm(ABC):
         """
         Plots out how the predicted values approximate the real ones
         """
-        self.__plotting_strategy.plot_results(self._test_set_y, self._prediction,
+        if self._is_scaled_y:
+            unscaled_test_set_y = pd.DataFrame(self._y_scaler.inverse_transform(self._test_set_y),
+                                               columns=self._test_set_y.columns)
+            unscaled_prediction = pd.DataFrame(self._y_scaler.inverse_transform(self._prediction),
+                                               columns=self._prediction.columns)
+        else:
+            unscaled_test_set_y = self._test_set_y
+            unscaled_prediction = self._prediction
+        self.__plotting_strategy.plot_results(unscaled_test_set_y, unscaled_prediction,
                                               self._parent_dir + '/' + self._sub_dir)
 
     def plot_clusters(self):
@@ -77,5 +85,19 @@ class LearningAlgorithm(ABC):
         """
         Saves test dataset with target values and prediction results with errors
         """
-        self.__saving_strategy.save_results(self._unscaled_test_set_x, self._test_set_y, self._prediction,
+        if self._is_scaled_x:
+            unscaled_test_set_x = pd.DataFrame(self._x_scaler.inverse_transform(self._test_set_x),
+                                               columns=self._test_set_x.columns)
+        else:
+            unscaled_test_set_x = self._test_set_x
+        if self._is_scaled_y:
+            unscaled_test_set_y = pd.DataFrame(self._y_scaler.inverse_transform(self._test_set_y),
+                                               columns=self._test_set_y.columns)
+            unscaled_prediction = pd.DataFrame(self._y_scaler.inverse_transform(self._prediction),
+                                               columns=self._prediction.columns)
+        else:
+            unscaled_test_set_y = self._test_set_y
+            unscaled_prediction = self._prediction
+        self.__saving_strategy.save_results(unscaled_test_set_x,
+                                            unscaled_test_set_y, unscaled_prediction,
                                             self._parent_dir + '/' + self._sub_dir)

@@ -19,8 +19,8 @@ class Dataset4UL(ABC):
     def __init__(self, filename):
         super().__init__()
         self._filename = filename
-        self.unscaled_dataset = None
         self.dataset = None
+        self.scaler = MinMaxScaler(feature_range=(0, 1), copy=True)
 
     def prepare(self):
         """
@@ -36,7 +36,6 @@ class Dataset4UL(ABC):
         """
         try:
             df_dataset = pd.read_csv(os.path.join(os.path.dirname(__file__), '../data', self._filename))
-            self.unscaled_dataset = df_dataset.copy()
             self.dataset = df_dataset.copy()
         except:
             print('An error occurred during reading the csv file.')
@@ -74,6 +73,5 @@ class Dataset4UL(ABC):
         """
         Scales down all input data to [0, 1] interval, makes a copy of original data
         """
-        scaler = MinMaxScaler(feature_range=(0, 1), copy=True)
-        x_scaled_arr = scaler.fit_transform(self.dataset)
+        x_scaled_arr = self.scaler.fit_transform(self.dataset)
         self.dataset = pd.DataFrame(x_scaled_arr, columns=self.dataset.columns)

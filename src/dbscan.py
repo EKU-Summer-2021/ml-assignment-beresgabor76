@@ -20,6 +20,7 @@ class DbscanClustering(LearningAlgorithm):
         self.__eps = eps
         self.__min_samples = min_samples
         self.__dbscan = None
+        self._is_scaled_x = True
         self._parent_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                         '../results/clustering')
         self._sub_dir = self._make_save_dir()
@@ -27,11 +28,12 @@ class DbscanClustering(LearningAlgorithm):
                                           os.path.join(self._parent_dir, self._sub_dir, 'run.log'))
         self._logger.info(f'Parameters: eps={self.__eps}, min_samples={self.__min_samples}')
 
-    def clustering(self, unscaled_dataset, dataset):
+    def clustering(self, dataset, scaler):
         """
         Creates clusters from the feature-scaled dataset, and put the labels into prediction
         """
-        self._copy_datasets(unscaled_dataset, dataset, dataset.index)
+        self._copy_datasets(dataset, dataset.index)
+        self._x_scaler = scaler
         self.__dbscan = DBSCAN(eps=self.__eps, min_samples=self.__min_samples)
         self.__dbscan.fit(dataset)
         self._test_set_y = pd.DataFrame(self.__dbscan.labels_, columns=['Label'])
