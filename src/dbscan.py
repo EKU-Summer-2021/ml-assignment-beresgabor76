@@ -26,7 +26,7 @@ class DbscanClustering(LearningAlgorithm):
         self._sub_dir = self._make_save_dir()
         self._logger = self._setup_logger(f'DbscanLog{self._sub_dir}',
                                           os.path.join(self._parent_dir, self._sub_dir, 'run.log'))
-        self._logger.info(f'Parameters: eps={self.__eps}, min_samples={self.__min_samples}')
+        self._logger.info('Parameters: eps=%f, min_samples=%f', self.__eps, self.__min_samples)
 
     def clustering(self, dataset, scaler):
         """

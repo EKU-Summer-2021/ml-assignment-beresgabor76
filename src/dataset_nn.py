@@ -28,4 +28,3 @@ class Dataset4NN(Dataset4SL, ABC):
         self.test_set_x = pd.DataFrame(scaled_arr, columns=self.test_set_x.columns)
         scaled_arr = self.y_scaler.transform(np.array([self.test_set_y]).reshape(-1, 1))
         self.test_set_y = pd.DataFrame(scaled_arr)
-

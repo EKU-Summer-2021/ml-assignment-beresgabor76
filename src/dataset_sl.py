@@ -98,5 +98,3 @@ class Dataset4SL(ABC):
         """
         Used in child class for feature scaling if necessary
         """
-
-

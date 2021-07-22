@@ -17,7 +17,6 @@ class Dataset4LR(Dataset4SL, ABC):
         """
         Scales down all input data to [0, 1] interval, makes a copy of original data
         """
-        self.unscaled_test_set_x = self.test_set_x.copy()
         self.x_scaler.fit(self.train_set_x)
         x_scaled_arr = self.x_scaler.transform(self.train_set_x)
         self.train_set_x = pd.DataFrame(x_scaled_arr, columns=self.train_set_x.columns)

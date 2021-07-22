@@ -3,9 +3,9 @@ Module for MLPRegressor wrapping class
 """
 import os
 import pandas as pd
-from src.learning_algorithm import LearningAlgorithm
 from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import GridSearchCV
+from src.learning_algorithm import LearningAlgorithm
 
 
 class MlpRegressor(LearningAlgorithm):
@@ -50,6 +50,9 @@ class MlpRegressor(LearningAlgorithm):
                                   max_fun=50000)
 
     def set_parameters(self, activation, hidden_layer_sizes, max_iter):
+        """
+        Sets parameters of MLPRegressor instance
+        """
         self.__activation = activation
         self.__hidden_layer_sizes = hidden_layer_sizes
         self.__max_iter = max_iter
@@ -107,4 +110,4 @@ class MlpRegressor(LearningAlgorithm):
         self._prediction.reset_index(inplace=True)
         self._prediction = self._prediction.drop('index', axis=1)
         self._logger.info('Score for test prediction: %f',
-                          self.__mlp.score(test_set_x, test_set_y.iloc[:, 1]))
+                          self.__mlp.score(test_set_x, test_set_y))

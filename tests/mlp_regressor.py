@@ -18,7 +18,7 @@ class MlpRegressorTest(unittest.TestCase):
         self.__regressor.train(self.__data.train_set_x, self.__data.train_set_y)
         score = self.__regressor._MlpRegressor__mlp.score(self.__data.test_set_x,
                                                           self.__data.test_set_y)
-        self.assertEqual(True, score > 0.80)
+        self.assertEqual(True, score > 0.75)
 
     def test_test(self):
         self.__data.prepare()
