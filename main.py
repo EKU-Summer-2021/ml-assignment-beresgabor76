@@ -47,8 +47,11 @@ if __name__ == '__main__':
 
     dataset4 = Dataset4LRInsurance(test_size=0.2, random_state=25)
     dataset4.prepare()
-    regressor = MlpRegressor(SavingStrategy4SL(), PlottingStrategy4LR())
-    regressor.set_parameters(activation='relu', hidden_layer_sizes=(5, 10, 20, 10, 5), max_iter=10000)
+    regressor = MlpNetwork(MLPRegressor(), SavingStrategy4SL(), PlottingStrategy4LR())
+    regressor.set_parameters(activation='relu',
+                             hidden_layer_sizes=(5, 10, 20, 10, 5),
+                             learning_rate='adaptive',
+                             max_iter=5000)
     #regressor.determine_parameters(dataset4.train_set_x, dataset4.train_set_y)
     regressor.train(dataset4.train_set_x, dataset4.train_set_y)
     regressor.test(dataset4.test_set_x, dataset4.test_set_y, dataset4.x_scaler)
@@ -67,7 +70,7 @@ if __name__ == '__main__':
     regressor.test(dataset5.test_set_x, dataset5.test_set_y, dataset5.x_scaler, dataset5.y_scaler)
     regressor.plot_results()
     regressor.save_results()
-
+    
     dataset6 = Dataset4MlpClfWines(test_size=0.2, random_state=25)
     dataset6.prepare()
     mlp_clf = MlpNetwork(MLPClassifier(), SavingStrategy4SL(), PlottingStrategy4CLF())
