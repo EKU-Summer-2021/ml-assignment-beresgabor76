@@ -1,23 +1,27 @@
 import unittest
 import os
+from sklearn.neural_network import MLPClassifier
 from src.dataset_mlp_clf_wines import Dataset4MlpClfWines
 from src.saving_strategy_sl import SavingStrategy4SL
 from src.plotting_strategy_clf import PlottingStrategy4CLF
-from src.mlp_classifier import MlpClassifier
+from src.mlp_network import MlpNetwork
 
 
 class MlpClassifierTest(unittest.TestCase):
     def setUp(self):
         self.__test_size = 0.2
         self.__data = Dataset4MlpClfWines(test_size=self.__test_size)
-        self.__mlp_clf = MlpClassifier(SavingStrategy4SL(), PlottingStrategy4CLF())
-        self.__mlp_clf.set_parameters(activation='relu', hidden_layer_sizes=(5, 10, 20, 10, 5), max_iter=5000)
+        self.__mlp_clf = MlpNetwork(MLPClassifier(), SavingStrategy4SL(), PlottingStrategy4CLF())
+        self.__mlp_clf.set_parameters(activation='relu',
+                                      hidden_layer_sizes=(5, 10, 20, 10, 5),
+                                      learning_rate='adaptive',
+                                      max_iter=5000)
 
     def test_train(self):
         self.__data.prepare()
         self.__mlp_clf.train(self.__data.train_set_x, self.__data.train_set_y)
-        score = self.__mlp_clf._MlpClassifier__mlp.score(self.__data.test_set_x,
-                                                         self.__data.test_set_y)
+        score = self.__mlp_clf._MlpNetwork__mlp.score(self.__data.test_set_x,
+                                                      self.__data.test_set_y)
         self.assertEqual(True, score > 0.5)
 
     def test_test(self):
