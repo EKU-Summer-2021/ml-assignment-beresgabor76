@@ -69,5 +69,4 @@ class DecisionTree(LearningAlgorithm):
         self._prediction.reset_index(inplace=True)
         self._prediction = self._prediction.drop('index', axis=1)
         conf_mx = confusion_matrix(test_set_y, test_set_y_pred)
-        self._logger.info('Confusion matrix on test set:')
-        self._logger.info('\n%s', conf_mx)
+        self._logger.info('Confusion matrix on test set:\n%s', conf_mx)

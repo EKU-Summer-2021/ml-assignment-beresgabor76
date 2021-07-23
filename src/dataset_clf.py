@@ -17,4 +17,3 @@ class Dataset4CLF(Dataset4SL, ABC):
         """
         No need for feature scaling before classification
         """
-        self.test_data = self.test_set_x.copy()

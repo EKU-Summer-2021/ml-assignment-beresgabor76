@@ -16,3 +16,8 @@ class SavingStrategy4UL(SavingStrategy):
         results_df.sort_values(by=['Label'], inplace=True)
         csv_file = os.path.join(os.path.dirname(__file__), save_dir, 'results.csv')
         results_df.to_csv(path_or_buf=csv_file, index=False)
+
+    def print_result(self, unscaled_test_set_x, test_set_y, prediction):
+        """
+        Prints out results to console
+        """

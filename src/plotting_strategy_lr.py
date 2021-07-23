@@ -26,8 +26,3 @@ class PlottingStrategy4LR(PlottingStrategy):
         """
         Shows plot results of learning algorithm's test
         """
-        min_x = min_y = test_set_y.min()
-        max_x = max_y = test_set_y.max()
-        plt.plot([min_x, max_x], [min_y, max_y])
-        plt.scatter(test_set_y, prediction, alpha=0.5)
-        plt.show()

@@ -26,7 +26,3 @@ class SavingStrategy4SL(SavingStrategy):
         """
         Prints out results to console
         """
-        results_df = pd.concat([unscaled_test_set_x, test_set_y, prediction], axis=1)
-        results_df['error'] = results_df.iloc[:, -1] - results_df.iloc[:, -2]
-        results_df = results_df.round(2)
-        print(results_df)

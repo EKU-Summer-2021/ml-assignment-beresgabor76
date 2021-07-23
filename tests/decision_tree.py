@@ -1,6 +1,5 @@
 import unittest
 import os
-import datetime
 from src.dataset_clf_wine_quality import Dataset4CLFWineQuality
 from src.decision_tree import DecisionTree
 from src.saving_strategy_sl import SavingStrategy4SL
@@ -25,24 +24,20 @@ class DecisionTreeTest(unittest.TestCase):
         self.__tree_clf.train(self.__data.train_set_x, self.__data.train_set_y)
         self.__tree_clf.test(self.__data.test_set_x, self.__data.test_set_y)
         self.__tree_clf.plot_results()
-        resolution = datetime.timedelta(seconds=10)
-        save_time = datetime.datetime.now() \
-                    - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
-        save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
-        plot_file = os.path.join(os.path.dirname(__file__),
+        plot_file1 = os.path.join(os.path.dirname(__file__),
                                  self.__tree_clf._parent_dir + '/' + self.__tree_clf._sub_dir,
-                                 'results.png')
-        self.assertEqual(True, os.path.isfile(plot_file))
+                                 'histogram.png')
+        self.assertEqual(True, os.path.isfile(plot_file1))
+        plot_file2 = os.path.join(os.path.dirname(__file__),
+                                 self.__tree_clf._parent_dir + '/' + self.__tree_clf._sub_dir,
+                                 'confusion_mx.png')
+        self.assertEqual(True, os.path.isfile(plot_file2))
 
     def test_save_results(self):
         self.__data.prepare()
         self.__tree_clf.train(self.__data.train_set_x, self.__data.train_set_y)
         self.__tree_clf.test(self.__data.test_set_x, self.__data.test_set_y)
         self.__tree_clf.save_results()
-        resolution = datetime.timedelta(seconds=10)
-        save_time = datetime.datetime.now() \
-                    - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
-        save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
         csv_file = os.path.join(os.path.dirname(__file__),
                                 self.__tree_clf._parent_dir + '/' + self.__tree_clf._sub_dir,
                                 'results.csv')

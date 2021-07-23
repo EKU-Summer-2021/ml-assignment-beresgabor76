@@ -1,6 +1,5 @@
 import unittest
 import os
-import datetime
 from src.dataset_ul_students import Dataset4ULStudentsPerformance
 from src.dbscan import DbscanClustering
 from src.saving_strategy_ul import SavingStrategy4UL
@@ -24,10 +23,6 @@ class DbscanClusteringTest(unittest.TestCase):
         self.__data.prepare()
         self.__dbscan.clustering(self.__data.dataset, self.__data.scaler)
         self.__dbscan.plot_clusters()
-        resolution = datetime.timedelta(seconds=10)
-        save_time = datetime.datetime.now() \
-                    - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
-        save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
         plot_file = os.path.join(os.path.dirname(__file__),
                                  self.__dbscan._parent_dir + '/' + self.__dbscan._sub_dir,
                                  'clusters.png')
@@ -38,10 +33,6 @@ class DbscanClusteringTest(unittest.TestCase):
         self.__dbscan.clustering(self.__data.dataset, self.__data.scaler)
         self.__dbscan.plot_clusters()
         self.__dbscan.save_results()
-        resolution = datetime.timedelta(seconds=10)
-        save_time = datetime.datetime.now() \
-                    - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
-        save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
         csv_file = os.path.join(os.path.dirname(__file__),
                                 self.__dbscan._parent_dir + '/' + self.__dbscan._sub_dir,
                                 'results.csv')

@@ -1,6 +1,5 @@
 import unittest
 import os
-import datetime
 from src.dataset_lr_insurance import Dataset4LRInsurance
 from src.saving_strategy_sl import SavingStrategy4SL
 from src.plotting_strategy_lr import PlottingStrategy4LR
@@ -34,10 +33,6 @@ class MlpRegressorTest(unittest.TestCase):
         self.__regressor.test(self.__data.test_set_x, self.__data.test_set_y,
                               self.__data.x_scaler)
         self.__regressor.plot_results()
-        resolution = datetime.timedelta(seconds=10)
-        save_time = datetime.datetime.now() \
-                    - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
-        save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
         plot_file = os.path.join(os.path.dirname(__file__),
                                  self.__regressor._parent_dir + '/' + self.__regressor._sub_dir,
                                  'results.png')
@@ -49,10 +44,6 @@ class MlpRegressorTest(unittest.TestCase):
         self.__regressor.test(self.__data.test_set_x, self.__data.test_set_y,
                               self.__data.x_scaler)
         self.__regressor.save_results()
-        resolution = datetime.timedelta(seconds=10)
-        save_time = datetime.datetime.now() \
-                    - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
-        save_path = save_time.strftime('%Y-%m-%d %H:%M:%S')
         csv_file = os.path.join(os.path.dirname(__file__),
                                 self.__regressor._parent_dir + '/' + self.__regressor._sub_dir,
                                 'results.csv')
