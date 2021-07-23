@@ -11,10 +11,12 @@ from src.saving_strategy_ul import SavingStrategy4UL
 from src.plotting_strategy_clu import PlottingStrategy4CLU
 from src.dataset_nn_insurance import Dataset4NNInsurance
 from src.mlp_regressor import MlpRegressor
+from src.mlp_classifier import MlpClassifier
+from src.dataset_mlp_clf_wines import Dataset4MlpClfWines
 
 
 if __name__ == '__main__':
-
+    """
     dataset1 = Dataset4LRInsurance(test_size=0.2, random_state=25)
     dataset1.prepare()
     regressor = LinearRegressor(SavingStrategy4SL(), PlottingStrategy4LR())
@@ -22,7 +24,7 @@ if __name__ == '__main__':
     regressor.test(dataset1.test_set_x, dataset1.test_set_y, dataset1.scaler)
     regressor.plot_results()
     regressor.save_results()
-
+    
     dataset2 = Dataset4CLFWineQuality(test_size=0.2, random_state=20)
     dataset2.prepare()
     tree_clf = DecisionTree(SavingStrategy4SL(), PlottingStrategy4CLF())
@@ -61,3 +63,13 @@ if __name__ == '__main__':
     regressor.test(dataset5.test_set_x, dataset5.test_set_y, dataset5.x_scaler, dataset5.y_scaler)
     regressor.plot_results()
     regressor.save_results()
+    """
+    dataset6 = Dataset4MlpClfWines(test_size=0.2, random_state=25)
+    dataset6.prepare()
+    mlp_clf = MlpClassifier(SavingStrategy4SL(), PlottingStrategy4CLF())
+    mlp_clf.set_parameters(activation='relu', hidden_layer_sizes=(25, 50, 100, 50, 25), max_iter=5000)
+    #mlp_clf.determine_parameters(dataset6.train_set_x, dataset6.train_set_y)
+    mlp_clf.train(dataset6.train_set_x, dataset6.train_set_y)
+    mlp_clf.test(dataset6.test_set_x, dataset6.test_set_y, dataset6.x_scaler)
+    mlp_clf.plot_results()
+    mlp_clf.save_results()
