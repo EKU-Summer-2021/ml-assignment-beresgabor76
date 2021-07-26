@@ -41,7 +41,7 @@ class LearningAlgorithm(ABC):
         resolution = datetime.timedelta(seconds=5)
         save_time = datetime.datetime.now() \
                     - datetime.timedelta(seconds=datetime.datetime.now().second % resolution.seconds)
-        sub_dir = save_time.strftime('%Y-%m-%d %H:%M:%S')
+        sub_dir = save_time.strftime('%Y.%m.%d_%H.%M.%S')
         if not os.path.exists(os.path.join(os.path.dirname(__file__), self._parent_dir, sub_dir)):
             os.chdir(self._parent_dir)
             os.mkdir(sub_dir)
