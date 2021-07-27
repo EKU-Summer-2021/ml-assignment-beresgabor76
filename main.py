@@ -14,10 +14,12 @@ from src.plotting_strategy_clu import PlottingStrategy4CLU
 from src.dataset_nn_insurance import Dataset4NNInsurance
 from src.mlp_network import MlpNetwork
 from src.dataset_mlp_clf_wines import Dataset4MlpClfWines
+from src.dataset_svm_insurance import Dataset4SVMInsurance
+from src.svm_regressor import SvmRegressor
 
 
 if __name__ == '__main__':
-    """
+
     dataset1 = Dataset4LRInsurance(test_size=0.2, random_state=25)
     dataset1.prepare()
     regressor = LinearRegressor(SavingStrategy4SL(), PlottingStrategy4LR())
@@ -44,7 +46,7 @@ if __name__ == '__main__':
     dbscan.save_results()
     dbscan.plot_clusters()
     dbscan.test_clustering()
-    """
+    
     dataset4 = Dataset4LRInsurance(test_size=0.2, random_state=25)
     dataset4.prepare()
     regressor = MlpNetwork(MLPRegressor(), SavingStrategy4SL(), PlottingStrategy4LR())
@@ -83,3 +85,13 @@ if __name__ == '__main__':
     mlp_clf.test(dataset6.test_set_x, dataset6.test_set_y, dataset6.x_scaler)
     mlp_clf.plot_results()
     mlp_clf.save_results()
+
+    dataset7 = Dataset4SVMInsurance()
+    dataset7.prepare()
+    svm_reg = SvmRegressor(SavingStrategy4SL(), PlottingStrategy4LR())
+    svm_reg.set_parameters(kernel='rbf', C=2, epsilon=0.1)
+    #svm_reg.determine_parameters(dataset7.train_set_x, dataset7.train_set_y)
+    svm_reg.train(dataset7.train_set_x, dataset7.train_set_y)
+    svm_reg.test(dataset7.test_set_x, dataset7.test_set_y, dataset7.x_scaler, dataset7.y_scaler)
+    svm_reg.plot_results()
+    svm_reg.save_results()
