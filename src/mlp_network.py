@@ -26,9 +26,11 @@ class MlpNetwork(LearningAlgorithm):
         if isinstance(self.__mlp, MLPClassifier):
             self._parent_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                             '../results/mlp_classifier')
+            self._scoring = 'roc_auc_ovr'
         elif isinstance(self.__mlp, MLPRegressor):
             self._parent_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                             '../results/mlp_regression')
+            self._scoring = 'neg_mean_squared_error'
         self._sub_dir = self._make_save_dir()
         self._logger = self._setup_logger(f'MlpNetworkLog.{self._parent_dir}.{self._sub_dir}',
                                           os.path.join(self._parent_dir, self._sub_dir, 'run.log'))
@@ -59,10 +61,10 @@ class MlpNetwork(LearningAlgorithm):
         GridSearchCV
         """
         params = {'activation': ['relu', 'identity'],
-                  'hidden_layer_sizes': [(5, 10, 20, 10, 5), (20, 50, 100, 50, 20)]}
+                  'hidden_layer_sizes': [(5, 10, 5), (5, 10, 20, 10, 5), (25, 50, 100, 50, 25)]}
         grid_search = GridSearchCV(estimator=self.__mlp,
                                    param_grid=params,
-                                   scoring='neg_mean_squared_error',
+                                   scoring=self._scoring,
                                    refit=True)
         grid_search.fit(train_set_x, train_set_y)
         self._logger.info('Best parameters found by GridSearchCV:')
